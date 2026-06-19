@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>GIPHY APP</title>
+  </head>
+  <body>
+    <style>
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient(135deg, #f9be7a, #fb7baa);
+        height: 100vh;
+      }
+
+      button {
+        margin-bottom: 28px;
+        padding: 10px 20px;
+        border-radius: 5px;
+        border: 2px solid #fa735b;
+        background-color: #fc7c66;
+        font-weight: 800;
+        font-size: 20px;
+        color: #bde43d;
+      }
+
+      #gif-container {
+        padding: 40px;
+        width: 60vw;
+      }
+
+      #gif-functions {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      form {
+        border-radius: 12px;
+        background-color: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+        padding: 25px;
+        display: flex;
+        flex-direction: column;
+      }
+
+      input {
+        margin-bottom: 10px;
+        border: 2px solid #e9a395;
+        padding: 5px 10px;
+        border-radius: 5px;
+      }
+
+      input:focus {
+        border: 2px solid #c88c80;
+        outline: none;
+      }
+    </style>
+
+    <div id="gif-container">
+      <img src="#" />
+    </div>
+    <div id="gif-functions">
+      <form id="search-form">
+        <input
+          type="text"
+          id="search-input"
+          placeholder="search gifs"
+          required
+        />
+        <button type="submit">Search</button>
+        <button id="refresh-btn" type="button">Refresh !</button>
+      </form>
+    </div>
+
+    <script>
+      const img = document.querySelector("img");
+      const searchForm = document.getElementById("search-form");
+      const searchInput = document.getElementById("search-input");
+
+      let currentQuery = "";
+
+      searchForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+
+        currentQuery = searchInput.value.trim();
+
+        if (currentQuery) {
+          displayGif(currentQuery);
+        }
+      });
+
+      document.getElementById("refresh-btn").addEventListener("click", () => {
+        if (currentQuery) {
+          displayGif(currentQuery);
+        }
+      });
+
+      function displayGif(query) {
+        fetch(
+          `https://api.giphy.com/v1/gifs/random?api_key=RYHy3mrJVGZIWnIQitwE5AB31Rnh0WpU&tag=${query}`,
+        )
+          .then((response) => response.json())
+          .then((response) => {
+            if (response.data) {
+              img.src = response.data.images.original.url;
+            } else {
+              alert("No GIF Found!");
+            }
+          })
+          .catch((err) => console.log(err));
+      }
+    </script>
+  </body>
+</html>
