@@ -97,19 +97,20 @@
         }
       });
 
-      function displayGif(query) {
-        fetch(
-          `https://api.giphy.com/v1/gifs/random?api_key=RYHy3mrJVGZIWnIQitwE5AB31Rnh0WpU&tag=${query}`,
-        )
-          .then((response) => response.json())
-          .then((response) => {
-            if (response.data) {
-              img.src = response.data.images.original.url;
-            } else {
-              alert("No GIF Found!");
-            }
-          })
-          .catch((err) => console.log(err));
+      async function displayGif(query) {
+        try {
+          const response = await fetch(
+            `https://api.giphy.com/v1/gifs/random?api_key=RYHy3mrJVGZIWnIQitwE5AB31Rnh0WpU&tag=${query}`,
+          );
+          const gifData = await response.json();
+          img.src = gifData.data.images.original.url;
+        } catch (error) {
+          console.error(error);
+        }
+      }
+
+      if (!currentQuery) {
+        displayGif("cat");
       }
     </script>
   </body>
