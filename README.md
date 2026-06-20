@@ -8,5 +8,6 @@ Learned :
 - .then()
 - .catch()
 - and fetch()
+- async & awaits
 
 Enjoying it so far.
